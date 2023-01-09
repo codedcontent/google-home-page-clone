@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import person from "./assets/person-unsplash.jpg";
 import googleIcon from "./assets/googlelogo_color_272x92dp.png";
 
@@ -23,6 +23,25 @@ function App() {
   const closeSuggestions = () => {
     setTypedText("");
   };
+
+  const myDomRef = useRef();
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (
+        !myDomRef.current.contains(e.target) ||
+        !myDomRef.current.parentNode.contains(e.target)
+      ) {
+        closeSuggestions();
+      }
+    };
+
+    document.addEventListener("mousedown", handler);
+
+    return () => {
+      document.removeEventListener("mousedown", handler);
+    };
+  }, []);
 
   return (
     <div className="h-screen w-screen relative p-0 m-0 overflow-hidden">
@@ -61,6 +80,7 @@ function App() {
             className={`lg:w-[580px] md:w-10/12 w-11/12 m-auto border-[1px] border-gray-200 relative ${
               typedText ? "rounded-3xl" : "rounded-full"
             } hover:shadow-[0_1px_6px_1px_rgba(32,33,36,0.28)]`}
+            ref={myDomRef}
           >
             <form className="h-12 w-full flex justify-between items-center gap-4 px-3">
               {/* Search icon */}
@@ -244,9 +264,9 @@ function App() {
           <p className="text-semibold">Nigeria</p>
         </div>
 
-        <div className="md:py-3.5 py-1 md:px-7 px-2 flex md:flex-row flex-col md:justify-between md:items-center relative z-20 md:space-y-0 space-y-2">
+        <div className="md:py-3.5 py-1 md:px-7 px-2 flex lg:flex-row flex-col lg:justify-between lg:items-center relative z-20 lg:space-y-0 space-y-2">
           {/* Left side links */}
-          <div className="flex gap-4 text-gray-600 md:text-sm text-xs">
+          <div className="flex gap-4 text-gray-600 lg:text-sm text-xs">
             <p className="text-semibold cursor-pointer">About</p>
 
             <p className="text-semibold cursor-pointer">Advertising</p>
@@ -257,11 +277,11 @@ function App() {
           </div>
 
           {/* Middle side links */}
-          <div className="flex-gap-2 items-center-justify-center text-gray-600 md:text-sm text-xs md:absolute text-center md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2">
+          <div className="flex-gap-2 items-center-justify-center text-gray-600 lg:text-sm text-xs lg:absolute text-center lg:top-1/2 lg:left-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2">
             <p className="text-semibold">🍀 Carbon neutral since 2007</p>
           </div>
 
-          <div className="flex gap-4 text-gray-600 md:text-sm text-xs">
+          <div className="flex gap-4 text-gray-600 lg:text-sm text-xs">
             <p className="text-semibold cursor-pointer">Privacy</p>
 
             <p className="text-semibold cursor-pointer">Terms</p>
